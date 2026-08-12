@@ -71,7 +71,7 @@ class SpotifyService {
       <String, String>{
         'q': query,
         'type': 'track',
-        'limit': '1',
+        'limit': '20',
       },
     );
 
@@ -130,16 +130,15 @@ class SpotifyTrackData {
     final externalIds = item['external_ids'] as Map<String, dynamic>? ?? const {};
 
     final durationMs = _asInt(item['duration_ms']);
+    final firstArtist = artists.isNotEmpty ? artists.first as Map<String, dynamic>? : null;
+    final firstImage = images.isNotEmpty ? images.first as Map<String, dynamic>? : null;
+
     return SpotifyTrackData(
       titulo: _asString(item['name']),
-      artistaPrincipal: _asString(
-        (artists.isNotEmpty ? (artists.first as Map<String, dynamic>?)?['name'] : null),
-      ),
+      artistaPrincipal: _asString(firstArtist?['name']),
       albumNome: _asString(album['name']),
       dataLancamento: _asString(album['release_date']),
-      urlCapaAlbum: _asString(
-        (images.isNotEmpty ? (images.first as Map<String, dynamic>?)?['url'] : null),
-      ),
+      urlCapaAlbum: _asString(firstImage?['url']),
       duracaoFormatada: _formatarDuracao(durationMs),
       popularidade: _asInt(item['popularity']),
       isrc: _asString(externalIds['isrc']),

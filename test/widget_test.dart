@@ -7,30 +7,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart' as http;
 
 import 'package:bizaro/main.dart';
-import 'package:bizaro/services/musicbrainz_service.dart';
-import 'package:bizaro/services/orquestrador_facade.dart';
-import 'package:bizaro/services/spotify_service.dart';
 
 void main() {
-  testWidgets('renderiza home do orquestrador', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      MyApp(
-        orquestradorFacade: OrquestradorFacade(
-          spotifyService: SpotifyService(
-            clientId: 'id',
-            clientSecret: 'secret',
-            httpClient: http.Client(),
-          ),
-          musicBrainzService: MusicBrainzService(httpClient: http.Client()),
-        ),
-      ),
-    );
+  testWidgets('renderiza a tela inicial do Spotify Top 50', (WidgetTester tester) async {
+    await tester.pumpWidget(const TopMusicasApp());
 
-    expect(find.text('Orquestrador Musical'), findsOneWidget);
-    expect(find.byType(TextField), findsOneWidget);
-    expect(find.widgetWithText(FilledButton, 'Orquestrar'), findsOneWidget);
+    expect(find.text('Top 50 – Spotify'), findsOneWidget);
+    expect(find.byType(AppBar), findsOneWidget);
   });
 }
